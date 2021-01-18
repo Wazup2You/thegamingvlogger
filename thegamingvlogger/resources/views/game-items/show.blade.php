@@ -14,7 +14,8 @@
 </head>
 <body>
 <h1>My Blog Post</h1>
-<p>{{ $post -> body }}</p>
+<p>{{ $gameItem -> title }}</p>
+<p>{{ $gameItem -> description }}</p>
 
 </body>
 </html>
