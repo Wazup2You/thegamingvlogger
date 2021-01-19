@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout')
 
 @section('content')
 
@@ -7,6 +7,16 @@
             <div class="top-right links">
                 @auth
                     <a href="{{ url('/home') }}">Home</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        {{ __('Logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+
                 @else
                     <a href="{{ route('login') }}">Login</a>
 
@@ -19,11 +29,11 @@
 
         <div class="content">
             <div class="title m-b-md">
-                Laravel
+                The Gaming Vlogger
             </div>
 
             <div class="links">
-                <a href="https://laravel.com/docs">Docs</a>
+                <a href={{ route('games') }}>Games</a>
                 <a href="https://laracasts.com">Laracasts</a>
                 <a href="https://laravel-news.com">News</a>
                 <a href="https://blog.laravel.com">Blog</a>

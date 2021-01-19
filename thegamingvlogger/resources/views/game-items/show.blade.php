@@ -1,5 +1,6 @@
-<!doctype html>
-<html lang="en">
+@extends('layout')
+
+@section('content')
 <head>
     <meta charset="UTF-8">
     <meta
@@ -15,7 +16,8 @@
 <body>
 <h1>My Blog Post</h1>
 <p>{{ $gameItem -> title }}</p>
+<p>{{ $gameItem -> genre_id }}</p>
 <p>{{ $gameItem -> description }}</p>
 
 </body>
-</html>
+@endsection

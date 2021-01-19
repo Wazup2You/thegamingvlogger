@@ -1,6 +1,5 @@
 <?php
 
-use App\BlogItem;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,30 +21,19 @@ Route::get('/home', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('games', 'GameItemController@index')->name('games');
-Route::get('games/create', 'GameItemController@create')->name('games.create');
-Route::post('games/store', 'GameItemController@store')->name('games.store');
-Route::get('games/{id}', 'GameItemController@show')->name('games.show');
+Route::prefix('games')->group(function() {
+    Route::get('', 'GameItemController@index')->name('games');
 
-//Route::get('/blogs', 'BlogItemController@index');
-//
-//Route::get('/blogs/{blog}', 'BlogItemController@show');
-//
-//Route::get('test', function () {
-//    return view('test');
-//});
+    Route::name('games.')->middleware('auth')->group(function() {
+        Route::get('create', 'GameItemController@create')->name('create');
+        Route::post('store', 'GameItemController@store')->name('store');
+        Route::get('{id}', 'GameItemController@show')->name('show');
+        Route::get('{id}/edit', 'GameItemController@edit')->name('edit');
+        Route::put('{id}', 'GameItemController@update')->name('update');
+    });
+});
 
-//Route::get('/', function (){
-//    return view('test', [
-//        'name' => request('name')
-//    ]);
-//});
-
-
-//Route::get('/posts/{post}', 'PostController@show');
-//
-//
 Auth::routes();
-//
-//Route::get('/home', 'HomeController@index')->name('home');
-//Route::get('/blog', 'BlogItemController@index')->name('blog');
+
+Route::get('/home', 'HomeController@index')->name('home');
+
