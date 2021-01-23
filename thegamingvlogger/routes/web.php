@@ -36,4 +36,5 @@ Route::prefix('games')->group(function() {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/genres', 'GenreController@index')->name('genres');
 

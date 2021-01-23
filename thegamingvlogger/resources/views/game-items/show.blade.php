@@ -16,7 +16,7 @@
 <body>
 <h1>My Blog Post</h1>
 <p>{{ $gameItem -> title }}</p>
-<p>{{ $gameItem -> genre_id }}</p>
+<p>{{ $gameItem -> genre -> title}}</p>
 <p>{{ $gameItem -> description }}</p>
 
 </body>

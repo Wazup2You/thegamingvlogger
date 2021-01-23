@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\GameItem;
 use App\Genre;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class GameItemController extends Controller
@@ -38,6 +39,8 @@ class GameItemController extends Controller
             'download_link' => 'required',
         ]);
 
+       // $tag = new Tag();
+       // $tag = $request->all();
         $gameItem = new GameItem();
         $gameItem->title = $request->get('title');
         $gameItem->description = $request->get('description');
@@ -46,6 +49,7 @@ class GameItemController extends Controller
         $gameItem->download_link = $request->get('download_link');
 
         $gameItem->save();
+       // $tag->save();
         return redirect('games')->with('succes', 'Game is opgeslagen!');
     }
 
@@ -53,7 +57,7 @@ class GameItemController extends Controller
     {
         // Show a single resource.
 
-        $gameItem = GameItem::find($id);
+        $gameItem = GameItem::findOrFail($id);
         if ($gameItem === null) {
             abort(404, "Dit game item is helaas niet gevonden");
         }
@@ -96,8 +100,10 @@ class GameItemController extends Controller
 
     }
 
-    public function destroy()
+    public function destroy($id)
     {
         //Delete the resource.
+        $gameItem = GameItem::find($id);
+        $gameItem->destroy();
     }
 }
