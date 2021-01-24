@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GameItem extends Model
 {
-    protected $fillable = ['title', 'description', 'image', 'genre_id', 'download_link'];
+    protected $fillable = ['title', 'description', 'image', 'genre_id', 'download_link', 'user_id'];
     //protected $guarded =[];
 
     public function genre()

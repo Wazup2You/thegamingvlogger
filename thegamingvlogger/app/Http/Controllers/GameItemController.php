@@ -2,13 +2,31 @@
 
 namespace App\Http\Controllers;
 
+
 use App\GameItem;
 use App\Genre;
 use App\Tag;
+use App\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class GameItemController extends Controller
 {
+    public function profile()
+    {
+        //Render a list of a resource.
+        if (request('tag')) {
+            $gameItems = Tag::where('name', request('tag'))->firstOrFail()->gameItems;
+        } else {
+
+            $gameItems = GameItem::all()->whereIn('user_id', Auth::id());
+        }
+
+        return view('game-items.profile', ['gameItems' => $gameItems]);
+
+//        return view('game-items.profile', [
+//            'gameItems' => GameItem::latest()->get()//order by created_at desc
+//        ]);
+    }
     public function index()
     {
         //Render a list of a resource.
@@ -18,10 +36,7 @@ class GameItemController extends Controller
             $gameItems = GameItem::latest()->get();
         }
 
-        return view('game-items.profile', ['gameItems' => $gameItems]);
-//        return view('game-items.profile', [
-//            'gameItems' => GameItem::latest()->get()//order by created_at desc
-//        ]);
+        return view('game-items.all', ['gameItems' => $gameItems]);
     }
 
     public function create()
@@ -37,6 +52,8 @@ class GameItemController extends Controller
     public function store(Request $request)
     {
         //Persist the new resource.
+
+        //$this->authorize('update', $request->gameItem);
 
         $request->validate([
             'title' => 'required',
@@ -57,8 +74,9 @@ class GameItemController extends Controller
         $gameItem->genre_id = $request->get('genre');
         $gameItem->download_link = $request->get('download_link');
 
-        $gameItem->user_id = 1;
-        //auth()->user()->gameItems()->create($gameItem);
+
+        $gameItem->user_id = Auth::user()->id;
+
 
         $gameItem->save();
 
@@ -69,6 +87,7 @@ class GameItemController extends Controller
 
     public function show($id)
     {
+
         // Show a single resource.
 
         $gameItem = GameItem::findOrFail($id);
@@ -79,8 +98,10 @@ class GameItemController extends Controller
         return view('game-items.show', compact('gameItem'));
     }
 
-    public function edit($id)
+    public function edit($id, User $user)
     {
+        //$this->authorize('update', $user->gameItem);
+
         $gameItem = GameItem::find($id);
         //Show a view to edit an existing resource.
         return view('game-items.edit',
@@ -118,6 +139,7 @@ class GameItemController extends Controller
     {
         //Delete the resource.
         $gameItem = GameItem::find($id);
-        $gameItem->destroy();
+        $gameItem->delete();
+        return redirect('games')->with('succes', 'Game is verwijderd!');
     }
 }

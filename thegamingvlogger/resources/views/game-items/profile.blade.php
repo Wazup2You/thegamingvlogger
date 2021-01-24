@@ -53,6 +53,12 @@
 {{--                            <span class="border border-dark btn btn">{{ $tag->name }}</span>--}}
 {{--                        @endforeach--}}
 {{--                    </div>--}}
+                    <p style="margin-top: 1em">
+                        @foreach( $gameItem->tags as $tag)
+                            <a href="{{ route('games', ['tag' => $tag->name]) }}">{{ $tag->name }}</a>
+                        @endforeach
+                    </p>
+
                     <p class="card-text">{{$gameItem->description}}</p>
                     <img class="card-img" src="{{$gameItem->image}}" alt="{{$gameItem->title}}"/>
                     <a class="btn btn-light" href="{{route('games.show', $gameItem->id)}}">Lees meer</a>
