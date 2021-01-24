@@ -36,8 +36,13 @@
                         <strong>{{$message}}</strong>
                     </div>
                 @endif
-        <div class="row">
-            @foreach($gameItems as $gameItem)
+        <div id="wrapper">
+            <div
+                id="page"
+                class="container"
+            >
+
+            @forelse($gameItems as $gameItem)
 
                 <div class="col-sm card border-0">
                     <h2 class="card-title">{{$gameItem->title}}</h2>
@@ -52,7 +57,11 @@
                     <img class="card-img" src="{{$gameItem->image}}" alt="{{$gameItem->title}}"/>
                     <a class="btn btn-light" href="{{route('games.show', $gameItem->id)}}">Lees meer</a>
         </div>
-        @endforeach
+            @empty
+                <p>
+                    No relevant games yet.
+                </p>
+            @endforelse
     </div>
     </div>
 

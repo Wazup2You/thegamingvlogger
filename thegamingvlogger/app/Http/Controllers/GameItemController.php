@@ -12,10 +12,16 @@ class GameItemController extends Controller
     public function index()
     {
         //Render a list of a resource.
+        if (request('tag')) {
+            $gameItems = Tag::where('name', request('tag'))->firstOrFail()->gameItems;
+        } else {
+            $gameItems = GameItem::latest()->get();
+        }
 
-        return view('game-items.profile', [
-            'gameItems' => GameItem::latest()->get()//order by created_at desc
-        ]);
+        return view('game-items.profile', ['gameItems' => $gameItems]);
+//        return view('game-items.profile', [
+//            'gameItems' => GameItem::latest()->get()//order by created_at desc
+//        ]);
     }
 
     public function create()
@@ -23,7 +29,8 @@ class GameItemController extends Controller
         //Shows a view to create a new resource.
 
         return view('game-items.create', [
-            'genres' => Genre::all()
+            'genres' => Genre::all(),
+            'tags' => Tag::all()
         ]);
     }
 
@@ -35,21 +42,28 @@ class GameItemController extends Controller
             'title' => 'required',
             'description' => 'required',
             'image' => 'required',
-            //'genre' => ['exist:genres,id'],
+            'genre' => 'exists:genres,id',
             'download_link' => 'required',
+            'tags' => 'exists:tags,id',
         ]);
+//            $gameItem = new GameItem($this->validateGameItem());
+//            $gameItem -> user_id = 1;
 
-       // $tag = new Tag();
-       // $tag = $request->all();
         $gameItem = new GameItem();
+
         $gameItem->title = $request->get('title');
         $gameItem->description = $request->get('description');
         $gameItem->image = $request->get('image');
         $gameItem->genre_id = $request->get('genre');
         $gameItem->download_link = $request->get('download_link');
 
+        $gameItem->user_id = 1;
+        //auth()->user()->gameItems()->create($gameItem);
+
         $gameItem->save();
-       // $tag->save();
+
+        $gameItem->tags()->attach(request('tags'));
+
         return redirect('games')->with('succes', 'Game is opgeslagen!');
     }
 

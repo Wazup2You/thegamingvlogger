@@ -15,12 +15,17 @@ class CreateGameItemsTable extends Migration
     {
         Schema::create('game_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->string('image');
             $table->text('description');
             $table->timestamps();
             $table->string('download_link');
             $table->foreignId('genre_id')->constrained('genres');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
