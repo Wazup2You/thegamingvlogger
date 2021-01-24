@@ -15,15 +15,17 @@
 </head>
 <body>
 <h1>My Games Post</h1>
-<p>{{ $gameItem -> title }}</p>
-<p><h1>Created by: </h1>{{ $gameItem -> user -> name}}</p>
-<p>{{ $gameItem -> genre -> title}}</p>
-<p>{{ $gameItem -> description }}</p>
+<p><h1>Game title: {{ $gameItem -> title }} </h1></p>
+<p><h1>Created by: {{ $gameItem -> user -> name}}</h1></p>
+<p><h1>Genre: {{ $gameItem -> genre -> title}}</h1></p>
+<p><h1>Description: {{ $gameItem -> description }}</h1></p>
 <p style="margin-top: 1em">
     @foreach( $gameItem->tags as $tag)
         <a href="{{ route('games', ['tag' => $tag->name]) }}">{{ $tag->name }}</a>
     @endforeach
 </p>
+<img class="card-img" src="{{$gameItem->image}}" alt="{{$gameItem->title}}"/>
+<p><h1>Download link: {{ $gameItem -> download_link}}</h1></p>
 <div>
 @can('update-item', $gameItem)
 <form action="{{route('games.edit', $gameItem->id)}}">

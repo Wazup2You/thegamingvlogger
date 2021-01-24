@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::before(function (User $user){
-            if ($user->id == 6){// admin
+            if ($user->id == 1){// admin
                 return true;
             }
         });
